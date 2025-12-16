@@ -1,0 +1,29 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Jogo de carta"
+run/main_scene="uid://ckrj2sk4dbihc"
+config/features=PackedStringArray("4.4", "Forward Plus")
+boot_splash/bg_color=Color(0.0666667, 0.0666667, 0.0666667, 1)
+boot_splash/show_image=false
+config/icon="res://icon.svg"
+run/bg_color=Color(0.14, 0.14, 0.14, 1)
+run/show_image=true
+
+[display]
+
+mouse_cursor/custom_image="uid://rffoqppv5qjr"
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=2
+viewport/hdr_2d=true

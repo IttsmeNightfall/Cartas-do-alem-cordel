@@ -1,0 +1,170 @@
+[gd_scene load_steps=11 format=3 uid="uid://c1whjr2krofjf"]
+
+[ext_resource type="Script" uid="uid://bmka6cto6l3ih" path="res://title_screen.gd" id="1_05l2w"]
+[ext_resource type="Texture2D" uid="uid://ilf2ksknldv" path="res://Title screen/Concept art - MENU.png" id="1_ak2if"]
+[ext_resource type="Theme" uid="uid://cpgisfe0kggki" path="res://Titletheme.tres" id="3_05l2w"]
+[ext_resource type="Texture2D" uid="uid://bm3pnevnmcx71" path="res://Title screen/Logo CAC - Original size 4.png" id="3_hafda"]
+[ext_resource type="VideoStream" uid="uid://d4heerdp1d7sq" path="res://Title screen/TitleScreen.ogv" id="5_tpml5"]
+[ext_resource type="AudioStream" uid="uid://c30wipskt1h5v" path="res://Title screen/Cartas-do-alemcordel-GameOver.mp3" id="6_tpml5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_05l2w"]
+
+[sub_resource type="Animation" id="Animation_hafda"]
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_05l2w"]
+resource_name = "fade_int"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(2, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tpml5"]
+_data = {
+&"RESET": SubResource("Animation_hafda"),
+&"fade_int": SubResource("Animation_05l2w")
+}
+
+[node name="TitleScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_05l2w")
+
+[node name="bg" type="TextureRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_ak2if")
+expand_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = -54
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+z_index = 6
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+alignment = 1
+
+[node name="Logo" type="TextureRect" parent="MarginContainer/VBoxContainer"]
+z_index = 4
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_hafda")
+stretch_mode = 5
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxEmpty_05l2w")
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxEmpty_05l2w")
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxEmpty_05l2w")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="start_btn" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme = ExtResource("3_05l2w")
+theme_override_font_sizes/font_size = 25
+text = "INICIAR"
+
+[node name="credits_btn" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme = ExtResource("3_05l2w")
+theme_override_font_sizes/font_size = 25
+text = "INVENTÁRIO"
+
+[node name="quit_btn" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme = ExtResource("3_05l2w")
+theme_override_font_sizes/font_size = 25
+text = "SAIR"
+
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = 10
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ColorRect"]
+libraries = {
+&"": SubResource("AnimationLibrary_tpml5")
+}
+autoplay = "fade_int"
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+stream = ExtResource("5_tpml5")
+volume_db = -80.0
+autoplay = true
+expand = true
+loop = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_tpml5")
+autoplay = true
+parameters/looping = true
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/start_btn" to="." method="_on_start_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/credits_btn" to="." method="_on_credits_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/quit_btn" to="." method="_on_quit_btn_pressed"]
+[connection signal="animation_finished" from="ColorRect/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
