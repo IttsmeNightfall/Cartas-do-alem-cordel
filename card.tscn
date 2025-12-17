@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://ch5vnnaum4anb"]
 
-[ext_resource type="Texture2D" uid="uid://dm0f5iefwyweb" path="res://WolfCard.png" id="1_kikvd"]
 [ext_resource type="Script" uid="uid://ghew3s0jjn7g" path="res://Card.gd" id="1_rjlel"]
+[ext_resource type="Texture2D" uid="uid://b0spjwp1q5wy1" path="res://assets/BriguentoCard.png" id="2_rjlel"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(291, 396)
@@ -10,10 +10,10 @@ size = Vector2(291, 396)
 script = ExtResource("1_rjlel")
 
 [node name="CardImg" type="Sprite2D" parent="."]
-position = Vector2(1.57343e-10, -9.53674e-07)
+position = Vector2(0.1447792, 0.23392105)
 rotation = 0.000496425
-scale = Vector2(0.211795, 0.211795)
-texture = ExtResource("1_kikvd")
+scale = Vector2(0.6029397, 0.55526334)
+texture = ExtResource("2_rjlel")
 
 [node name="Area2D" type="Area2D" parent="."]
 

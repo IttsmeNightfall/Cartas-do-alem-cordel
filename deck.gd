@@ -4,7 +4,7 @@ const CARD_SCENE_PATH = "res://Card.tscn"
 const CARD_DATABASE_PATH = "res://CardDatabase.gd" # Ajuste o caminho!
 const CARD_DRAW_SPEED = 0.2
 
-var player_deck = ["Wolf", "Wolf", "Wolf", "Wolf"] # Nomes variados
+var player_deck = ["Cachaceiro", "Briguento", "Matilha", "Zeca-Peito-de-Ferro"] # Nomes variados
 var card_database # Variável para guardar o script carregado
 
 @onready var player_hand = $"../PlayerHand"
@@ -24,7 +24,7 @@ func draw_card():
 		var new_card = preload(CARD_SCENE_PATH).instantiate()
 		# Ajuste para carregar imagens diferentes
 		# Certifique-se de ter as imagens: "KnightCard.png", "ArcherCard.png", etc. na pasta assets
-		var image_path = "res://" + card_name + "Card.png"
+		var image_path = "res://assets/" + card_name + "Card.png"
 		new_card.get_node("CardImg").texture = load(image_path)
 		
 		# --- Configurar Ataque e Vida ---

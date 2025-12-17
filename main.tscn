@@ -6,45 +6,49 @@
 [ext_resource type="Script" uid="uid://bnyw3ceqcpefv" path="res://InputManager.gd" id="4_7mycd"]
 [ext_resource type="Script" uid="uid://b8x84hyln3jjr" path="res://PlayerHand.gd" id="4_lquwl"]
 [ext_resource type="Script" uid="uid://j6lra8218a1i" path="res://deck.gd" id="6_7mycd"]
-[ext_resource type="Texture2D" uid="uid://51a1drkvkpm3" path="res://Card - Lenda (1).png" id="7_272bh"]
+[ext_resource type="Texture2D" uid="uid://d10wjtv8jqor" path="res://assets/Deck.png" id="7_272bh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_272bh"]
-size = Vector2(178.889, 278.889)
+size = Vector2(230, 310)
 
 [node name="Main" type="Node2D"]
+scale = Vector2(0.4, 0.4)
 
 [node name="CardManager" type="Node2D" parent="."]
 script = ExtResource("1_0xm2m")
 
-[node name="CardSlot" parent="." instance=ExtResource("4_1bvp3")]
-visibility_layer = 2
-position = Vector2(699, 189)
-scale = Vector2(0.65, 0.65)
+[node name="CardSlots" type="Node2D" parent="."]
+scale = Vector2(0.99999994, 0.99999994)
 
-[node name="CardSlot2" parent="." instance=ExtResource("4_1bvp3")]
+[node name="CardSlot" parent="CardSlots" instance=ExtResource("4_1bvp3")]
 visibility_layer = 2
-position = Vector2(982, 189)
-scale = Vector2(0.65, 0.65)
+position = Vector2(1100.0001, 1040.0001)
+scale = Vector2(0.65000004, 0.65000004)
 
-[node name="CardSlot3" parent="." instance=ExtResource("4_1bvp3")]
+[node name="CardSlot2" parent="CardSlots" instance=ExtResource("4_1bvp3")]
 visibility_layer = 2
-position = Vector2(1279, 189)
-scale = Vector2(0.65, 0.65)
+position = Vector2(1383.0001, 1040.0001)
+scale = Vector2(0.65000004, 0.65000004)
 
-[node name="CardSlot4" parent="." instance=ExtResource("4_1bvp3")]
+[node name="CardSlot3" parent="CardSlots" instance=ExtResource("4_1bvp3")]
 visibility_layer = 2
-position = Vector2(702, 545)
-scale = Vector2(0.65, 0.65)
+position = Vector2(1680.0001, 1040.0001)
+scale = Vector2(0.65000004, 0.65000004)
 
-[node name="CardSlot5" parent="." instance=ExtResource("4_1bvp3")]
+[node name="CardSlot4" parent="CardSlots" instance=ExtResource("4_1bvp3")]
 visibility_layer = 2
-position = Vector2(985, 545)
-scale = Vector2(0.65, 0.65)
+position = Vector2(1103.0001, 1396.0002)
+scale = Vector2(0.65000004, 0.65000004)
 
-[node name="CardSlot6" parent="." instance=ExtResource("4_1bvp3")]
+[node name="CardSlot5" parent="CardSlots" instance=ExtResource("4_1bvp3")]
 visibility_layer = 2
-position = Vector2(1282, 545)
-scale = Vector2(0.65, 0.65)
+position = Vector2(1386.0002, 1396.0002)
+scale = Vector2(0.65000004, 0.65000004)
+
+[node name="CardSlot6" parent="CardSlots" instance=ExtResource("4_1bvp3")]
+visibility_layer = 2
+position = Vector2(1683.0002, 1396.0002)
+scale = Vector2(0.65000004, 0.65000004)
 
 [node name="PlayerHand" type="Node2D" parent="."]
 script = ExtResource("4_lquwl")
@@ -79,7 +83,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="Deck" type="Node2D" parent="."]
-position = Vector2(1765, 743)
+position = Vector2(2695, 1389.9999)
 script = ExtResource("6_7mycd")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Deck"]
@@ -96,5 +100,5 @@ z_index = -2
 collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Deck/Area2D"]
-position = Vector2(-0.55555, -0.555553)
+position = Vector2(0.00012207031, 0)
 shape = SubResource("RectangleShape2D_272bh")
