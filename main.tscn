@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://cg32je73nhwqm"]
+[gd_scene load_steps=10 format=3 uid="uid://cg32je73nhwqm"]
 
 [ext_resource type="Script" uid="uid://do85sfbngvwi2" path="res://CardManager.gd" id="1_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://dirxks88vxwyi" path="res://EnemyCardSlot.tscn" id="3_5vw27"]
 [ext_resource type="Script" uid="uid://b8ie2n5lfq08m" path="res://HUD.gd" id="3_h2yge"]
 [ext_resource type="PackedScene" uid="uid://bjq1ivajda7jj" path="res://CardSlot.tscn" id="4_1bvp3"]
 [ext_resource type="Script" uid="uid://bnyw3ceqcpefv" path="res://InputManager.gd" id="4_7mycd"]
@@ -35,20 +36,23 @@ visibility_layer = 2
 position = Vector2(1680.0001, 1040.0001)
 scale = Vector2(0.65000004, 0.65000004)
 
-[node name="CardSlot4" parent="CardSlots" instance=ExtResource("4_1bvp3")]
-visibility_layer = 2
-position = Vector2(1103.0001, 1396.0002)
-scale = Vector2(0.65000004, 0.65000004)
+[node name="EnemyCardSlots" type="Node2D" parent="."]
+scale = Vector2(0.99999994, 0.99999994)
 
-[node name="CardSlot5" parent="CardSlots" instance=ExtResource("4_1bvp3")]
-visibility_layer = 2
-position = Vector2(1386.0002, 1396.0002)
-scale = Vector2(0.65000004, 0.65000004)
+[node name="EnemyCardSlot2" parent="EnemyCardSlots" instance=ExtResource("3_5vw27")]
+position = Vector2(1095.0001, 580)
+scale = Vector2(0.7, 0.7)
+script = null
 
-[node name="CardSlot6" parent="CardSlots" instance=ExtResource("4_1bvp3")]
-visibility_layer = 2
-position = Vector2(1683.0002, 1396.0002)
-scale = Vector2(0.65000004, 0.65000004)
+[node name="EnemyCardSlot3" parent="EnemyCardSlots" instance=ExtResource("3_5vw27")]
+position = Vector2(1380.0001, 577.5)
+scale = Vector2(0.7, 0.7)
+script = null
+
+[node name="EnemyCardSlot4" parent="EnemyCardSlots" instance=ExtResource("3_5vw27")]
+position = Vector2(1675, 580)
+scale = Vector2(0.7, 0.7)
+script = null
 
 [node name="PlayerHand" type="Node2D" parent="."]
 script = ExtResource("4_lquwl")
@@ -102,3 +106,16 @@ collision_layer = 4
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Deck/Area2D"]
 position = Vector2(0.00012207031, 0)
 shape = SubResource("RectangleShape2D_272bh")
+
+[node name="EnemyDeck" type="Node2D" parent="."]
+position = Vector2(2705, 202.50012)
+script = ExtResource("6_7mycd")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="EnemyDeck"]
+offset_right = 40.0
+offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="EnemyDeck"]
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("7_272bh")

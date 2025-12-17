@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://dirxks88vxwyi"]
+
+[ext_resource type="Script" uid="uid://5p2nhoc50b7e" path="res://CardSlot.gd" id="1_xhd56"]
+[ext_resource type="Texture2D" uid="uid://c6sf36q8tm8at" path="res://SLOT - BICHO.png" id="2_brhaq"]
+
+[node name="CardSlot" type="Node2D"]
+script = ExtResource("1_xhd56")
+
+[node name="CardSlotImage" type="Sprite2D" parent="."]
+texture = ExtResource("2_brhaq")
+
+[node name="Marker2D" type="Marker2D" parent="."]

@@ -22,7 +22,6 @@ run/show_image=true
 [display]
 
 window/stretch/mode="canvas_items"
-window/stretch/aspect="expand"
 mouse_cursor/custom_image="uid://rffoqppv5qjr"
 
 [rendering]

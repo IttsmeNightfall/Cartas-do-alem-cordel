@@ -5,7 +5,7 @@ const HAND_COUNT = 5 # Quantas cartas começam na mão
 const CARD_WIDTH = 200 # Distância entre as cartas (ajuste conforme o tamanho da sua arte)
 const DEFAULT_CARD_SPEED = 0.1
 
-@export var HAND_Y_OFFSET: int = 175 # distância em pixels do fundo da tela
+@export var HAND_Y_OFFSET: int = 70 # distância em pixels do fundo da tela
 
 var player_hand = [] # Array para guardar as cartas que estão na mão
 var center_screen_x = 0
