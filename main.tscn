@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cg32je73nhwqm"]
+[gd_scene load_steps=13 format=3 uid="uid://cg32je73nhwqm"]
 
 [ext_resource type="Script" uid="uid://do85sfbngvwi2" path="res://CardManager.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://dirxks88vxwyi" path="res://EnemyCardSlot.tscn" id="3_5vw27"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://dlyj47dyvy75c" path="res://EnemyDeck.gd" id="8_4c57u"]
 [ext_resource type="Script" uid="uid://di6u54753slw4" path="res://BatleManege.gd" id="9_kek77"]
 [ext_resource type="Script" uid="uid://bctn1gdl6gjta" path="res://OpponentHand.gd" id="11_efxa6"]
+[ext_resource type="Texture2D" uid="uid://c6sf36q8tm8at" path="res://SLOT - BICHO.png" id="12_dg77c"]
 
 [node name="Main" type="Node2D"]
 scale = Vector2(0.4, 0.4)
@@ -133,3 +134,18 @@ offset_bottom = 447.50018
 text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="PlayerDiscard" type="Node2D" parent="."]
+position = Vector2(382.5, 1300)
+scale = Vector2(0.7, 0.7)
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayerDiscard"]
+texture = ExtResource("12_dg77c")
+
+[node name="EnemyDiscard" type="Node2D" parent="."]
+position = Vector2(332.50003, 125)
+scale = Vector2(0.7, 0.7)
+
+[node name="Sprite2D" type="Sprite2D" parent="EnemyDiscard"]
+position = Vector2(67.49999, 162.49994)
+texture = ExtResource("12_dg77c")

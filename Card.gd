@@ -8,6 +8,7 @@ var hand_position: Vector2 = Vector2()
 var attack: int = 0
 var health: int = 0
 var card_type: String = "Comum" # Tipo padrão
+var card_slot_card_is_in = null # Referência ao slot onde a carta está
 
 # Configura os dados da carta com base no CardDatabase
 func set_card_data(data):
@@ -31,3 +32,9 @@ func remove_card():
 	if card_in_slot:
 		card_in_slot.locked_in_slot = false
 		card_in_slot = null
+
+# Atualiza os valores visuais da carta (vida e ataque)
+func update_visuals():
+	# Ajuste os nomes dos nós conforme sua cena
+	$HealthLabel.text = str(health)
+	$AttackLabel.text = str(attack)

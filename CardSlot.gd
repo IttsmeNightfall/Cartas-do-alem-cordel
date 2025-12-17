@@ -10,8 +10,8 @@ func accept_card(card):
 	card_in_slot = card
 	card.locked_in_slot = true
 	# guarda referência ao slot na própria carta (para poder liberar quando for pegar)
-	# use meta em vez de criar propriedades dinâmicas na carta (mais seguro)
 	card.set_meta("slot_ref", self)
+	card.card_slot_card_is_in = self # Carta agora sabe onde está
 
 	# centraliza automaticamente no slot usando global_position
 	card.global_position = global_position
@@ -29,6 +29,7 @@ func remove_card():
 		# remove referência ao slot armazenada em meta
 		if card_in_slot.has_meta("slot_ref"):
 			card_in_slot.remove_meta("slot_ref")
+		card_in_slot.card_slot_card_is_in = null # Limpa a referência ao slot na carta
 		# restaura escala padrão ao remover do slot
 		card_in_slot.scale = Vector2(0.8, 0.8)
 		card_in_slot = null

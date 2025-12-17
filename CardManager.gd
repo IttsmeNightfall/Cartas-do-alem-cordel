@@ -6,23 +6,27 @@ const COLLISSION_MASK_CARD_SLOT = 2
 var screen_size: Vector2
 var card_being_dragged = null
 var card_hovered = null
-var card_target_slot = null # slot candidate durante o drag
+var card_target_slot = null
 var played_monster_this_turn: bool = false
+var selected_monster = null
 
+# --- CORREÇÃO AQUI ---
+# Declarar BattleManager aqui garante que ele seja encontrado no início
+@onready var battle_manager = $"../BattleManager"
 @onready var input_manager = $"../InputManager"
 @onready var player_hand = $"../PlayerHand"
 
-
 func _ready() -> void:
+	# Verificação de segurança
+	if not battle_manager:
+		print("ERRO CRÍTICO: BattleManager não encontrado no CardManager!")
+		
 	screen_size = get_viewport().get_visible_rect().size
-	# Conecta o sinal de release do InputManager
 	if input_manager:
 		input_manager.connect("left_mouse_button_released", Callable(self, "on_left_click_released"))
-	# Atualiza screen_size quando a janela mudar de tamanho
 	var vp = get_viewport()
 	if vp:
 		vp.connect("size_changed", Callable(self, "_on_viewport_size_changed"))
-
 
 func _process(delta):
 	# -------------------------------------------------
@@ -71,12 +75,76 @@ func _process(delta):
 			highlight_card(card_hovered, true)
 			_show_card_preview(card_hovered)
 
+func _input(event):
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			var card = raycast_check_for_card()
+			if card:
+				card_clicked(card)
 
-# NOVAS FUNÇÕES: input delegations
+# ---------------------------------------------------------
+# LÓGICA PARA CLICAR NA CARTA
+# ---------------------------------------------------------
+func card_clicked(card):
+	# Se a carta está na MÃO (não está num slot), arrasta normal
+	if card.card_slot_card_is_in == null:
+		start_drag(card)
+		return
+
+	# --- CORREÇÃO AQUI ---
+	# Use a variável global battle_manager
+	if battle_manager:
+		# 1. Verifica se já atacou neste turno
+		if "player_cards_that_attacked_this_turn" in battle_manager:
+			if card in battle_manager.player_cards_that_attacked_this_turn:
+				print("Esta carta já atacou!")
+				return
+		else:
+			print("ERRO: Variável 'player_cards_that_attacked_this_turn' não existe no BattleManager.")
+
+		# 2. Verifica se é o turno do jogador
+		if battle_manager.current_turn == battle_manager.ENEMY_TURN:
+			return
+
+		# 3. Lógica de Seleção
+		select_card_for_battle(card)
+	else:
+		print("ERRO: BattleManager é nulo ao clicar na carta!")
+
+# ---------------------------------------------------------
+# SELEÇÃO DE CARTA PARA BATALHA
+# ---------------------------------------------------------
+func select_card_for_battle(card):
+	# Se clicar na mesma carta já selecionada, deseleciona
+	if selected_monster == card:
+		selected_monster.global_position.y += 20 # Volta para a posição original
+		selected_monster = null
+		return
+
+	# Se já tinha outra selecionada, deseleciona a antiga
+	if selected_monster != null:
+		selected_monster.global_position.y += 20
+
+	# Seleciona a nova
+	selected_monster = card
+	selected_monster.global_position.y -= 20 # Sobe um pouco visualmente
+
+	# 4. Ataque Direto Automático
+	# --- CORREÇÃO AQUI ---
+	# Use a variável global battle_manager
+	if battle_manager:
+		if battle_manager.opponent_cards_on_field.size() == 0:
+			battle_manager.direct_attack(card, "Player") # Player é quem está atacando
+			selected_monster.global_position.y += 20
+			selected_monster = null
+
+# ---------------------------------------------------------
+# FUNÇÕES DE DRAG-AND-DROP
+# ---------------------------------------------------------
 func start_drag(card):
 	if not card:
 		return
-	# Ensure this is a card node
+	# Garante que é um nó de carta
 	if not card.is_in_group("card"):
 		return
 	# Se a carta está presa no slot, não permita pegar
@@ -107,7 +175,7 @@ func finish_drag():
 			slot_encontrado.accept_card(card_being_dragged)
 		else:
 			card_being_dragged.global_position = slot_encontrado.global_position
-			# marcarem o slot manualmente
+			# Marcar o slot manualmente
 			slot_encontrado.card_in_slot = card_being_dragged
 			card_being_dragged.locked_in_slot = true
 			card_being_dragged.set_meta("slot_ref", slot_encontrado)
@@ -140,7 +208,6 @@ func highlight_card(card, hovered):
 		else:
 			card.scale = Vector2(0.8, 0.8)
 			card.z_index = 1
-
 
 # ---------------------------------------------------------
 # RAYCAST PARA ENCONTRAR A CARTA SOB O MOUSE
@@ -198,37 +265,12 @@ func _show_card_preview(card):
 	var hud = get_tree().get_root().get_node("Main/CanvasLayer")
 	hud.show_card_preview(card)
 
-
 func _hide_card_preview():
 	var hud = get_tree().get_root().get_node("Main/CanvasLayer")
 	hud.hide_card_preview()
 
 func _on_viewport_size_changed():
 	screen_size = get_viewport().get_visible_rect().size
-
-func _input(event):
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		if event.pressed:
-			var card = raycast_check_for_card()
-			if card:
-				if card.locked_in_slot:
-					return
-				card_being_dragged = card
-		else:
-			if card_being_dragged:
-				var slot_found = raycast_check_for_card_slot(card_being_dragged)
-				if slot_found and slot_found.card_in_slot == null:
-					if played_monster_this_turn:
-						print("Você já jogou um monstro neste turno!")
-						return_card_to_hand(card_being_dragged)
-					else:
-						player_hand.remove_card_from_hand(card_being_dragged)
-						slot_found.accept_card(card_being_dragged)
-						card_being_dragged.global_position = slot_found.global_position
-						played_monster_this_turn = true
-				else:
-					return_card_to_hand(card_being_dragged)
-				card_being_dragged = null
 
 func return_card_to_hand(card):
 	player_hand.add_card_to_hand(card)

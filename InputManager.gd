@@ -5,6 +5,7 @@ signal left_mouse_button_released
 
 const COLLISION_MASK_CARD = 1
 const COLLISION_MASK_DECK = 4 # Layer 3 no inspetor = valor 4 no código (2^2)
+const OPPONENT_CARD_MASK = 8 # Layer 4 no inspetor = valor 8 no código (2^3)
 
 var card_manager_reference
 var deck_reference
@@ -35,12 +36,18 @@ func raycast_at_cursor():
 		# Se clicou numa CARTA (use bitwise check em vez de igualdade)
 		if (result_collision_layer & COLLISION_MASK_CARD) != 0:
 			var card_found = result[0].collider.get_parent()
-			# Ensure the found node is actually a card (in group 'card') before starting drag
-			if card_found and card_found.is_in_group("card") and card_manager_reference:
-				# Use call_deferred para evitar problemas de ordem de execução
-				card_manager_reference.call_deferred("start_drag", card_found)
+			# Verifica se o nó encontrado tem o método "card_clicked"
+			if card_found and card_found.has_method("card_clicked") and card_manager_reference:
+				# Chama a função genérica "card_clicked" no CardManager
+				card_manager_reference.call_deferred("card_clicked", card_found)
 		
 		# Se clicou no DECK
 		elif (result_collision_layer & COLLISION_MASK_DECK) != 0:
 			if deck_reference:
 				deck_reference.call_deferred("draw_card")
+		
+		# Se clicou numa CARTA DO INIMIGO
+		elif (result_collision_layer & OPPONENT_CARD_MASK) != 0:
+			var enemy_card = result[0].collider.get_parent()
+			# Notifica o BattleManager que uma carta inimiga foi clicada
+			$"../BattleManager".call_deferred("enemy_card_selected", enemy_card)
