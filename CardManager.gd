@@ -7,6 +7,7 @@ var screen_size: Vector2
 var card_being_dragged = null
 var card_hovered = null
 var card_target_slot = null # slot candidate durante o drag
+var played_monster_this_turn: bool = false
 
 @onready var input_manager = $"../InputManager"
 @onready var player_hand = $"../PlayerHand"
@@ -204,3 +205,33 @@ func _hide_card_preview():
 
 func _on_viewport_size_changed():
 	screen_size = get_viewport().get_visible_rect().size
+
+func _input(event):
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			var card = raycast_check_for_card()
+			if card:
+				if card.locked_in_slot:
+					return
+				card_being_dragged = card
+		else:
+			if card_being_dragged:
+				var slot_found = raycast_check_for_card_slot(card_being_dragged)
+				if slot_found and slot_found.card_in_slot == null:
+					if played_monster_this_turn:
+						print("Você já jogou um monstro neste turno!")
+						return_card_to_hand(card_being_dragged)
+					else:
+						player_hand.remove_card_from_hand(card_being_dragged)
+						slot_found.accept_card(card_being_dragged)
+						card_being_dragged.global_position = slot_found.global_position
+						played_monster_this_turn = true
+				else:
+					return_card_to_hand(card_being_dragged)
+				card_being_dragged = null
+
+func return_card_to_hand(card):
+	player_hand.add_card_to_hand(card)
+	card.locked_in_slot = false
+	if card.has_meta("slot_ref"):
+		card.remove_meta("slot_ref")

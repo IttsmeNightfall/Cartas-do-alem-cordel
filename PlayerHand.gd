@@ -1,58 +1,63 @@
 extends Node2D
 
-const CARD_SCENE_PATH = "res://Card.tscn" # Verifique se o caminho bate com o seu projeto
-const HAND_COUNT = 5 # Quantas cartas começam na mão
-const CARD_WIDTH = 200 # Distância entre as cartas (ajuste conforme o tamanho da sua arte)
+const CARD_SCENE_PATH = "res://OpponentCard.tscn"
+const HAND_COUNT = 5
+const CARD_WIDTH = 80 # Reduzi um pouco para ficarem mais agrupadas, ajuste se precisar
 const DEFAULT_CARD_SPEED = 0.1
 
-@export var HAND_Y_OFFSET: int = 70 # distância em pixels do fundo da tela
+# Ajuste este valor. Como sua tela tem 962 de altura:
+# 100 = Cartas bem na base.
+# 150 = Cartas um pouco mais para cima.
+@export var HAND_Y_OFFSET: int = 80 
 
-var player_hand = [] # Array para guardar as cartas que estão na mão
-var center_screen_x = 0
-
-@onready var card_manager = $"../CardManager" # Ajuste o caminho para o seu CardManager
+var player_hand = [] 
+@onready var card_manager = $"../CardManager"
 
 func _ready():
-	# Deck will instantiate cards now
-	# Ensure we know the center X of the visible viewport
-	center_screen_x = get_viewport().get_visible_rect().size.x / 2
-	pass
+	# Debug para ver se o Godot está lendo a resolução certa
+	var screen_size = get_viewport().get_visible_rect().size
+	print("RESOLUÇÃO DETECTADA PELO SCRIPT: ", screen_size)
 
 func add_card_to_hand(card, speed = DEFAULT_CARD_SPEED):
 	if card not in player_hand:
-		# Nova carta entrando na mão
 		player_hand.insert(0, card)
 		update_hand_positions(speed)
 	else:
-		# Carta que já estava na mão e foi solta no "vazio" (Snap Back)
 		animate_card_to_position(card, card.hand_position, speed)
 
 func update_hand_positions(speed = DEFAULT_CARD_SPEED):
 	for i in range(player_hand.size()):
 		var card = player_hand[i]
-		# Calcula a nova posição baseada no índice
 		var new_position = calculate_card_position(i)
 		
-		# Guarda essa posição na carta (para ela saber para onde voltar)
+		# Salva a posição alvo
 		card.hand_position = new_position
 		
+		# IMPORTANTE: Usa a animação global
 		animate_card_to_position(card, new_position, speed)
 
 func calculate_card_position(index):
-	# Ensure center is valid and up-to-date
-	center_screen_x = get_viewport().get_visible_rect().size.x / 2
-
-	# Position the hand a fixed offset from the bottom of the viewport
-	var viewport_h = get_viewport().get_visible_rect().size.y
-	var hand_y = clamp(viewport_h - HAND_Y_OFFSET, 50, viewport_h - 50)
-
-	var total_width = (player_hand.size() - 1) * CARD_WIDTH
-	var x_offset = center_screen_x + (index * CARD_WIDTH) - (total_width / 2.0)
+	# Pega o tamanho ATUAL da janela (se você maximizar, ele atualiza)
+	var viewport_size = get_viewport().get_visible_rect().size
+	
+	# 1. Define a Altura (Y)
+	# Pega a altura total e sobe o valor do OFFSET
+	var hand_y = viewport_size.y - HAND_Y_OFFSET
+	
+	# 2. Define a Largura (X) para Centralizar
+	# Largura total que as cartas ocupam juntas
+	var total_hand_width = (player_hand.size() - 1) * CARD_WIDTH
+	
+	# Fórmula: (Meio da Tela) - (Metade do Grupo de Cartas) + (Posição desta carta)
+	var x_offset = (viewport_size.x / 2.0) - (total_hand_width / 2.0) + (index * CARD_WIDTH)
+	
 	return Vector2(x_offset, hand_y)
 
 func animate_card_to_position(card, new_position, speed = DEFAULT_CARD_SPEED):
 	var tween = get_tree().create_tween()
-	tween.tween_property(card, "position", new_position, speed)
+	# MUDANÇA CRÍTICA: 'global_position' garante que o cálculo da tela funcione
+	# independente de onde o nó 'PlayerHand' ou 'CardManager' estejam.
+	tween.tween_property(card, "global_position", new_position, speed)
 
 func remove_card_from_hand(card):
 	if card in player_hand:

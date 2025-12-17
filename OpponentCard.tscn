@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://bahuanptgxgb3"]
+
+[ext_resource type="Script" uid="uid://cxvl4c5pe1qnf" path="res://OpponentCard.gd" id="1_m7dkl"]
+[ext_resource type="Texture2D" uid="uid://b0spjwp1q5wy1" path="res://assets/BriguentoCard.png" id="2_665iq"]
+
+[node name="Card2" type="Node2D" groups=["card"]]
+light_mask = 2
+script = ExtResource("1_m7dkl")
+
+[node name="CardImg" type="Sprite2D" parent="."]
+position = Vector2(0.1447792, 0.23392105)
+rotation = 0.000496425
+scale = Vector2(0.6029397, 0.55526334)
+texture = ExtResource("2_665iq")
+
+[node name="AttackLabel" type="RichTextLabel" parent="."]
+modulate = Color(0, 0, 0, 1)
+offset_left = -113.0
+offset_top = -141.0
+offset_right = -84.0
+offset_bottom = -105.0
+scale = Vector2(2, 2)
+
+[node name="HealthLabel" type="RichTextLabel" parent="."]
+modulate = Color(0, 0, 0, 1)
+offset_left = -107.0
+offset_top = -85.0
+offset_right = -67.0
+offset_bottom = -45.0
+scale = Vector2(2, 2)
